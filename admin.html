@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - Chat App</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div id="admin-auth-container" class="auth-container">
+        <div class="auth-form-container">
+            <h1>Admin Login</h1>
+            <form id="admin-login-form" class="auth-form">
+                <div class="form-group">
+                    <label for="admin-email">Email</label>
+                    <input type="email" id="admin-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="admin-password">Senha</label>
+                    <input type="password" id="admin-password" required>
+                </div>
+                <button type="submit" class="btn-primary">Entrar como Admin</button>
+                <p id="admin-login-error" class="error-message"></p>
+            </form>
+        </div>
+    </div>
+    
+    <div id="admin-container" class="admin-container" style="display: none;">
+        <header class="admin-header">
+            <h1>Painel Administrativo</h1>
+            <div class="admin-user">
+                <span id="admin-username"></span>
+                <button id="admin-logout-btn" class="btn-outlined">Sair</button>
+            </div>
+        </header>
+        
+        <main class="admin-content">
+            <aside class="admin-sidebar">
+                <nav class="admin-nav">
+                    <ul>
+                        <li class="admin-nav-item active" data-tab="users-tab">Usuários</li>
+                        <li class="admin-nav-item" data-tab="messages-tab">Mensagens</li>
+                        <li class="admin-nav-item" data-tab="stats-tab">Estatísticas</li>
+                    </ul>
+                </nav>
+            </aside>
+            
+            <section class="admin-main">
+                <div id="users-tab" class="admin-tab active">
+                    <div class="tab-header">
+                        <h2>Gerenciamento de Usuários</h2>
+                    </div>
+                    
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                    <th>Email</th>
+                                    <th>Admin</th>
+                                    <th>Criado em</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table-body">
+                                <!-- Usuários serão adicionados dinamicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div id="messages-tab" class="admin-tab">
+                    <div class="tab-header">
+                        <h2>Histórico de Mensagens</h2>
+                        <div class="filters">
+                            <input type="text" id="message-search" placeholder="Buscar mensagem...">
+                        </div>
+                    </div>
+                    
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Remetente</th>
+                                    <th>Destinatário/Grupo</th>
+                                    <th>Conteúdo</th>
+                                    <th>Imagem</th>
+                                    <th>Data</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="messages-table-body">
+                                <!-- Mensagens serão adicionadas dinamicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div id="stats-tab" class="admin-tab">
+                    <div class="tab-header">
+                        <h2>Estatísticas do Sistema</h2>
+                    </div>
+                    
+                    <div class="stats-cards">
+                        <div class="stats-card">
+                            <div class="stats-icon users-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" fill="currentColor"/>
+                                    <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" fill="currentColor"/>
+                                </svg>
+                            </div>
+                            <div class="stats-info">
+                                <h3>Total de Usuários</h3>
+                                <p id="total-users">0</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stats-card">
+                            <div class="stats-icon messages-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z" fill="currentColor"/>
+                                </svg>
+                            </div>
+                            <div class="stats-info">
+                                <h3>Total de Mensagens</h3>
+                                <p id="total-messages">0</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stats-card">
+                            <div class="stats-icon groups-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 12.75C13.63 12.75 15.07 13.14 16.24 13.65C17.32 14.13 18 15.21 18 16.38V18H6V16.39C6 15.21 6.68 14.13 7.76 13.66C8.93 13.14 10.37 12.75 12 12.75ZM4 13C5.1 13 6 12.1 6 11C6 9.9 5.1 9 4 9C2.9 9 2 9.9 2 11C2 12.1 2.9 13 4 13ZM5.13 14.1C4.76 14.04 4.39 14 4 14C3.01 14 2.07 14.21 1.22 14.58C0.48 14.9 0 15.62 0 16.43V18H4.5V16.39C4.5 15.56 4.73 14.78 5.13 14.1ZM20 13C21.1 13 22 12.1 22 11C22 9.9 21.1 9 20 9C18.9 9 18 9.9 18 11C18 12.1 18.9 13 20 13ZM24 16.43C24 15.62 23.52 14.9 22.78 14.58C21.93 14.21 20.99 14 20 14C19.61 14 19.24 14.04 18.87 14.1C19.27 14.78 19.5 15.56 19.5 16.39V18H24V16.43ZM12 6C13.66 6 15 7.34 15 9C15 10.66 13.66 12 12 12C10.34 12 9 10.66 9 9C9 7.34 10.34 6 12 6Z" fill="currentColor"/>
+                                </svg>
+                            </div>
+                            <div class="stats-info">
+                                <h3>Total de Grupos</h3>
+                                <p id="total-groups">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-charts">
+                        <div class="stats-chart">
+                            <h3>Registro de Usuários</h3>
+                            <div id="users-chart" class="chart-container">
+                                <div class="chart-placeholder">Carregando gráfico...</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stats-chart">
+                            <h3>Atividade de Mensagens</h3>
+                            <div id="messages-chart" class="chart-container">
+                                <div class="chart-placeholder">Carregando gráfico...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <!-- Modal para editar usuário -->
+    <div id="edit-user-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Editar Usuário</h3>
+                <button id="close-edit-modal" class="close-modal">&times;</button>
+            </div>
+            <form id="edit-user-form">
+                <input type="hidden" id="edit-user-id">
+                <div class="form-group">
+                    <label for="edit-username">Nome de Usuário</label>
+                    <input type="text" id="edit-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-email">Email</label>
+                    <input type="email" id="edit-email" required>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="edit-is-admin">
+                        Conceder privilégios de administrador
+                    </label>
+                </div>
+                <button type="submit" class="btn-primary">Salvar Alterações</button>
+            </form>
+        </div>
+    </div>
+    
+    <script src="admin.js"></script>
+</body>
+</html>
